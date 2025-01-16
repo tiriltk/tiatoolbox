@@ -3507,7 +3507,7 @@ class TIFFWSIReader(WSIReader):
         self._zarr_lru_cache = zarr.LRUStoreCache(self._zarr_store, max_size=cache_size)
         self._zarr_group = zarr.open(self._zarr_lru_cache)
         if not isinstance(self._zarr_group, zarr.Group):
-            group = zarr.group()
+            group = zarr.open_group()
             group[0] = self._zarr_group
             self._zarr_group = group
         self.level_arrays = {
