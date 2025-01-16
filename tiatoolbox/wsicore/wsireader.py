@@ -131,7 +131,7 @@ def is_ngff(  # noqa: PLR0911
         zarr_group = zarr.open(store, mode="r")
     except Exception:  # skipcq: PYL-W0703  # noqa: BLE001
         return False
-    if not isinstance(zarr_group, zarr.hierarchy.Group):
+    if not isinstance(zarr_group, zarr.Group):
         return False
     group_attrs = zarr_group.attrs.asdict()
     try:
@@ -3506,8 +3506,8 @@ class TIFFWSIReader(WSIReader):
         )
         self._zarr_lru_cache = zarr.LRUStoreCache(self._zarr_store, max_size=cache_size)
         self._zarr_group = zarr.open(self._zarr_lru_cache)
-        if not isinstance(self._zarr_group, zarr.hierarchy.Group):
-            group = zarr.hierarchy.group()
+        if not isinstance(self._zarr_group, zarr.Group):
+            group = zarr.group()
             group[0] = self._zarr_group
             self._zarr_group = group
         self.level_arrays = {
@@ -4746,7 +4746,7 @@ class NGFFWSIReader(WSIReader):
 
         numcodecs.register_codecs()
         store = zarr.SQLiteStore(path) if is_sqlite3(path) else path
-        self._zarr_group: zarr.hierarchy.Group = zarr.open(store, mode="r")
+        self._zarr_group: zarr.Group = zarr.open(store, mode="r")
         attrs = self._zarr_group.attrs
         multiscales = attrs["multiscales"][0]
         axes = multiscales["axes"]
