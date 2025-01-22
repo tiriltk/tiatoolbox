@@ -131,6 +131,30 @@ def _get_timm_architecture(
             init_values=1e-5,
             dynamic_img_size=False,
         )
+        
+    if arch_name == "UNI2":  # pragma: no cover
+        # UNI2-h tile encoder: https://huggingface.co/MahmoodLab/UNI2-h
+        # Coverage skipped timm API is tested using efficient U-Net.
+        timm_kwargs = {
+            'img_size': 224, 
+            'patch_size': 14, 
+            'depth': 24,
+            'num_heads': 24,
+            'init_values': 1e-5, 
+            'embed_dim': 1536,
+            'mlp_ratio': 2.66667*2,
+            'num_classes': 0, 
+            'no_embed_class': True,
+            'mlp_layer': timm.layers.SwiGLUPacked, 
+            'act_layer': torch.nn.SiLU, 
+            'reg_tokens': 8, 
+            'dynamic_img_size': True
+        }
+        return timm.create_model(
+            "hf-hub:MahmoodLab/UNI2-h",
+            pretrained=pretrained,
+            **timm_kwargs,
+        )
 
     msg = f"Backbone {arch_name} not supported. "
     raise ValueError(msg)
@@ -272,6 +296,7 @@ class TimmModel(ModelABC):
              - "efficientnet_b{i}" for i in [0, 1, ..., 7]
              - "UNI"
              - "prov-gigapath"
+             - "UNI2"
         num_classes (int):
             Number of classes output by model.
         pretrained (bool, keyword-only):
@@ -456,6 +481,7 @@ class TimmBackbone(ModelABC):
              - "efficientnet_b{i}" for i in [0, 1, ..., 7]
              - "UNI"
              - "prov-gigapath"
+             - "UNI2"
         pretrained (bool, keyword-only):
             Whether to load pretrained weights.
 
