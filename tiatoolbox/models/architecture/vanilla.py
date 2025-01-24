@@ -9,6 +9,7 @@ import timm
 import torch
 import torchvision.models as torch_models
 from torch import nn
+from timm.layers import SwiGLUPacked
 
 from tiatoolbox.models.models_abc import ModelABC
 
@@ -156,6 +157,26 @@ def _get_timm_architecture(
             **timm_kwargs,
         )
 
+    if arch_name == "Virchow":  # pragma: no cover
+        # Virchow tile encoder: https://huggingface.co/paige-ai/Virchow
+        # Coverage skipped timm API is tested using efficient U-Net.
+        return timm.create_model(
+            "hf_hub:paige-ai/Virchow",
+            pretrained=pretrained,
+            mlp_layer=SwiGLUPacked,
+            act_layer=torch.nn.SiLU
+        )
+
+    if arch_name == "Virchow2":  # pragma: no cover
+        # Virchow2 tile encoder: https://huggingface.co/paige-ai/Virchow2
+        # Coverage skipped timm API is tested using efficient U-Net.
+        return timm.create_model(
+            "hf_hub:paige-ai/Virchow2",
+            pretrained=pretrained,
+            mlp_layer=SwiGLUPacked,
+            act_layer=torch.nn.SiLU
+        )
+
     msg = f"Backbone {arch_name} not supported. "
     raise ValueError(msg)
 
@@ -297,6 +318,8 @@ class TimmModel(ModelABC):
              - "UNI"
              - "prov-gigapath"
              - "UNI2"
+             - "Virchow"
+             - "Virchow2"
         num_classes (int):
             Number of classes output by model.
         pretrained (bool, keyword-only):
@@ -482,6 +505,8 @@ class TimmBackbone(ModelABC):
              - "UNI"
              - "prov-gigapath"
              - "UNI2"
+             - "Virchow"
+             - "Virchow2"
         pretrained (bool, keyword-only):
             Whether to load pretrained weights.
 
