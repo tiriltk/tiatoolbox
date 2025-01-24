@@ -177,6 +177,15 @@ def _get_timm_architecture(
             act_layer=torch.nn.SiLU,
         )
 
+    if arch_name == "kaiko":  # pragma: no cover
+        # Kaiko tile encoder: https://huggingface.co/1aurent/vit_large_patch14_reg4_224.kaiko_ai_towards_large_pathology_fms
+        # Coverage skipped timm API is tested using efficient U-Net.
+        return timm.create_model(
+            "hf_hub:1aurent/vit_large_patch14_reg4_224.kaiko_ai_towards_large_pathology_fms",
+            pretrained=pretrained,
+            dynamic_img_size=True,
+        )
+
     msg = f"Backbone {arch_name} not supported. "
     raise ValueError(msg)
 
@@ -320,6 +329,7 @@ class TimmModel(ModelABC):
              - "UNI2"
              - "Virchow"
              - "Virchow2"
+             - "kaiko"
         num_classes (int):
             Number of classes output by model.
         pretrained (bool, keyword-only):
@@ -507,6 +517,7 @@ class TimmBackbone(ModelABC):
              - "UNI2"
              - "Virchow"
              - "Virchow2"
+             - "kaiko"
         pretrained (bool, keyword-only):
             Whether to load pretrained weights.
 
