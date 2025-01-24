@@ -8,8 +8,8 @@ import numpy as np
 import timm
 import torch
 import torchvision.models as torch_models
-from torch import nn
 from timm.layers import SwiGLUPacked
+from torch import nn
 
 from tiatoolbox.models.models_abc import ModelABC
 
@@ -164,7 +164,7 @@ def _get_timm_architecture(
             "hf_hub:paige-ai/Virchow",
             pretrained=pretrained,
             mlp_layer=SwiGLUPacked,
-            act_layer=torch.nn.SiLU
+            act_layer=torch.nn.SiLU,
         )
 
     if arch_name == "Virchow2":  # pragma: no cover
@@ -174,7 +174,7 @@ def _get_timm_architecture(
             "hf_hub:paige-ai/Virchow2",
             pretrained=pretrained,
             mlp_layer=SwiGLUPacked,
-            act_layer=torch.nn.SiLU
+            act_layer=torch.nn.SiLU,
         )
 
     msg = f"Backbone {arch_name} not supported. "
