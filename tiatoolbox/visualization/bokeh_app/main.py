@@ -221,11 +221,9 @@ def create_channel_color_ui() -> Column:
 
     color_picker = ColorPicker(title="Channel Color", width=100)
 
-    def update_selected_color( # noqa: ARG001 # skipcq: PYL-W0613
-            attr: str, 
-            old: str, 
-            new: str
-            ) -> None:
+    def update_selected_color(  # noqa: ARG001 # skipcq: PYL-W0613
+        attr: str, old: str, new: str
+    ) -> None:
         """Update the selected color in multichannel ui."""
         selected = color_source.selected.indices
         if selected:
@@ -248,9 +246,8 @@ def create_channel_color_ui() -> Column:
     apply_button.on_click(apply_changes)
 
     def update_color_picker(  # noqa: ARG001 # skipcq: PYL-W0613
-            attr: str, 
-            old: str, 
-            new: str) -> None:
+        attr: str, old: str, new: str
+    ) -> None:
         """Update the color picker when a new channel is selected."""
         if new:
             selected_color = color_source.data["colors"][new[0]]
@@ -270,9 +267,8 @@ def create_channel_color_ui() -> Column:
     )
 
     def enhance_cb(  # noqa: ARG001 # skipcq: PYL-W0613
-            attr: str, 
-            old: str, 
-            new: str) -> None:
+        attr: str, old: str, new: str
+    ) -> None:
         """Enhance slider callback."""
         UI["s"].put(
             f"http://{host2}:5000/tileserver/enhance",
