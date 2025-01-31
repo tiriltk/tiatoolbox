@@ -145,7 +145,8 @@ def get_channel_info() -> dict[str, tuple[int, int, int]]:
     try:
         resp = json.loads(resp.text)
         return resp.get("channels", {}), resp.get("active", [])
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
+        logger.warning(f"Error decoding JSON: {e}")
         return {}, []
 
 
@@ -159,7 +160,8 @@ def set_channel_info(
     )
 
 
-def create_channel_color_ui():
+def create_channel_color_ui() -> Column:
+    """Create the multi-channel UI controls."""
     channel_source = ColumnDataSource(
         data={
             "channels": [],
@@ -174,7 +176,8 @@ def create_channel_color_ui():
     )
 
     color_formatter = HTMLTemplateFormatter(
-        template='<div style="background-color: <%= value %>; color: <%= value %>; border: 1px solid #ddd;"><%= value %></div>'
+        template="""<div style='background-color: <%= value %>; color:
+          <%= value %>; border: 1px solid #ddd;'><%= value %></div>"""
     )
 
     channel_table = DataTable(
@@ -218,7 +221,8 @@ def create_channel_color_ui():
 
     color_picker = ColorPicker(title="Channel Color", width=100)
 
-    def update_selected_color(attr, old, new):
+    def update_selected_color(attr: str, old: str, new: str) -> None:  # noqa: ARG001
+        """Update the selected color in multichannel ui."""
         selected = color_source.selected.indices
         if selected:
             color_source.patch({"colors": [(selected[0], new)]})
@@ -239,7 +243,8 @@ def create_channel_color_ui():
 
     apply_button.on_click(apply_changes)
 
-    def update_color_picker(attr, old, new):
+    def update_color_picker(attr: str, old: str, new: str) -> None:  # noqa: ARG001
+        """Update the color picker when a new channel is selected."""
         if new:
             selected_color = color_source.data["colors"][new[0]]
             color_picker.color = selected_color
