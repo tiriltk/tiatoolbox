@@ -221,8 +221,10 @@ def create_channel_color_ui() -> Column:
 
     color_picker = ColorPicker(title="Channel Color", width=100)
 
-    def update_selected_color(  # noqa: ARG001 # skipcq: PYL-W0613
-        attr: str, old: str, new: str
+    def update_selected_color(
+        attr: str,  # noqa: ARG001 # skipcq: PYL-W0613
+        old: str,  # noqa: ARG001 # skipcq: PYL-W0613
+        new: str,
     ) -> None:
         """Update the selected color in multichannel ui."""
         selected = color_source.selected.indices
@@ -245,8 +247,10 @@ def create_channel_color_ui() -> Column:
 
     apply_button.on_click(apply_changes)
 
-    def update_color_picker(  # noqa: ARG001 # skipcq: PYL-W0613
-        attr: str, old: str, new: str
+    def update_color_picker(
+        attr: str,  # noqa: ARG001 # skipcq: PYL-W0613
+        old: str,  # noqa: ARG001 # skipcq: PYL-W0613
+        new: str,
     ) -> None:
         """Update the color picker when a new channel is selected."""
         if new:
@@ -266,8 +270,10 @@ def create_channel_color_ui() -> Column:
         width=200,
     )
 
-    def enhance_cb(  # noqa: ARG001 # skipcq: PYL-W0613
-        attr: str, old: str, new: str
+    def enhance_cb(
+        attr: str,  # noqa: ARG001 # skipcq: PYL-W0613
+        old: str,  # noqa: ARG001 # skipcq: PYL-W0613
+        new: str,
     ) -> None:
         """Enhance slider callback."""
         UI["s"].put(
@@ -935,14 +941,22 @@ def populate_slide_list(slide_folder: Path, search_txt: str | None = None) -> No
     UI["slide_select"].options = file_list
 
 
-def filter_input_cb(attr: str, old: str, new: str) -> None:  # noqa: ARG001 # skipcq: PYL-W0613
+def filter_input_cb(
+    attr: str,  # noqa: ARG001 # skipcq: PYL-W0613
+    old: str,  # noqa: ARG001 # skipcq: PYL-W0613
+    new: str,  # noqa: ARG001 # skipcq: PYL-W0613
+) -> None:
     """Change predicate to be used to filter annotations."""
     build_predicate()
     UI["vstate"].update_state = 1
     UI["vstate"].to_update.update(["overlay"])
 
 
-def cprop_input_cb(attr: str, old: str, new: list[str]) -> None:  # noqa: ARG001 # skipcq: PYL-W0613
+def cprop_input_cb(
+    attr: str,  # noqa: ARG001 # skipcq: PYL-W0613
+    old: str,  # noqa: ARG001 # skipcq: PYL-W0613
+    new: list[str],
+) -> None:
     """Change property to color by."""
     if len(new) == 0:
         return
