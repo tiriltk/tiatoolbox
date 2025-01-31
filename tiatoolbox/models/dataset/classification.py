@@ -322,7 +322,7 @@ class WSIPatchDataset(dataset_abc.PatchDatasetABC):
             # mask on the fly
             try:
                 mask_reader = self.reader.tissue_mask(resolution=1.25, units="power")
-            except:
+            except ValueError:
                 # if power is None, try with mpp
                 mask_reader = self.reader.tissue_mask(resolution=6.0, units="mpp")
             # ? will this mess up  ?
