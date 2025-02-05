@@ -70,7 +70,6 @@ class Proto(ModelABC):
     # skipcq
     def infer_batch() -> None:
         """Define infer batch."""
-        pass  # base class definition pass  # noqa: PIE790
 
 
 @pytest.mark.skipif(
