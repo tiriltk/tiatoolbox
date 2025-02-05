@@ -29,7 +29,7 @@ from tiatoolbox.wsicore.wsireader import VirtualWSIReader, WSIReader
 from .io_config import IOSegmentorConfig
 
 if TYPE_CHECKING:  # pragma: no cover
-    from tiatoolbox.typing import IntPair, Resolution, Units
+    from tiatoolbox.type_hints import IntPair, Resolution, Units
 
 
 def _estimate_canvas_parameters(
