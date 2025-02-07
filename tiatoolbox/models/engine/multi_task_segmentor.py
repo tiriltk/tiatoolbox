@@ -40,7 +40,7 @@ from tiatoolbox.models.engine.nucleus_instance_segmentor import (
 if TYPE_CHECKING:  # pragma: no cover
     import torch
 
-    from tiatoolbox.typing import IntBounds
+    from tiatoolbox.type_hints import IntBounds
 
     from .io_config import IOInstanceSegmentorConfig, IOSegmentorConfig
 

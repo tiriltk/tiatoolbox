@@ -355,7 +355,7 @@ def test_engine_run() -> NoReturn:
 
 def test_engine_run_with_verbose() -> NoReturn:
     """Test engine run with verbose."""
-    """Run pytest with `-rP` option to view progress bar on the captured stderr call"""
+    # Run pytest with `-rP` option to view progress bar on the captured stderr call.
 
     eng = TestEngineABC(model="alexnet-kather100k", verbose=True)
     out = eng.run(
@@ -401,7 +401,7 @@ def test_patch_pred_zarr_store(tmp_path: pytest.TempPathFactory) -> NoReturn:
     )
     assert Path.exists(out), "Zarr output file does not exist"
 
-    """ test custom zarr output file name"""
+    # Test custom zarr output file name
     eng = TestEngineABC(model="alexnet-kather100k")
     out = eng.run(
         images=np.zeros((10, 224, 224, 3), dtype=np.uint8),
