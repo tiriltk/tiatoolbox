@@ -2,16 +2,14 @@
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from pydoc import locate
-from typing import TYPE_CHECKING, Optional, Union, cast
+from typing import TYPE_CHECKING
 
 import torch
 
 from tiatoolbox import rcParam
 from tiatoolbox.models.dataset.classification import predefined_preproc_func
-from tiatoolbox.models.models_abc import ModelABC
 from tiatoolbox.utils import download_data
 
 if TYPE_CHECKING:  # pragma: no cover
