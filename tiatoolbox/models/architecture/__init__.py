@@ -52,9 +52,10 @@ def fetch_pretrained_weights(
     if save_path is None:
         file_name = info["url"].split("/")[-1]
         processed_save_path = rcParam["TIATOOLBOX_HOME"] / "models" / file_name
-
-    if type(save_path) is str:
+    elif type(save_path) is str:
         processed_save_path = Path(save_path)
+    else:
+        processed_save_path = save_path
 
     download_data(info["url"], save_path=processed_save_path, overwrite=overwrite)
     return processed_save_path
