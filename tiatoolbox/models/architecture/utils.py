@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from typing import cast
 
 import numpy as np
 import torch
@@ -48,7 +49,7 @@ def compile_model(
     model: nn.Module | None = None,
     *,
     mode: str = "default",
-) -> nn.Module:
+) -> nn.Module | None:
     """A decorator to compile a model using torch-compile.
 
     Args:
@@ -97,12 +98,12 @@ def compile_model(
         )
         return model
 
-    return torch.compile(model, mode=mode)  # pragma: no cover
+    return cast(nn.Module, torch.compile(model, mode=mode))  # pragma: no cover
 
 
 def centre_crop(
-    img: np.ndarray | torch.tensor,
-    crop_shape: np.ndarray | torch.tensor,
+    img: np.ndarray | torch.Tensor,
+    crop_shape: np.ndarray | torch.Tensor | tuple,
     data_format: str = "NCHW",
 ) -> np.ndarray | torch.Tensor:
     """A function to center crop image with given crop shape.
@@ -136,8 +137,8 @@ def centre_crop(
 
 
 def centre_crop_to_shape(
-    x: np.ndarray | torch.tensor,
-    y: np.ndarray | torch.tensor,
+    x: np.ndarray | torch.Tensor,
+    y: np.ndarray | torch.Tensor,
     data_format: str = "NCHW",
 ) -> np.ndarray | torch.Tensor:
     """A function to center crop image to shape.
@@ -200,11 +201,13 @@ class UpSample2x(nn.Module):
         """Initialize :class:`UpSample2x`."""
         super().__init__()
         # correct way to create constant within module
+
+        self.unpool_mat: torch.Tensor
         self.register_buffer(
             "unpool_mat",
             torch.from_numpy(np.ones((2, 2), dtype="float32")),
         )
-        self.unpool_mat.unsqueeze(0)
+        self.unpool_mat.unsqueeze_(0)
 
     def forward(self: UpSample2x, x: torch.Tensor) -> torch.Tensor:
         """Logic for using layers defined in init.
