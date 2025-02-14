@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any, Callable
 
 import torch
 import torch._dynamo
-from torch import device as torch_device
 
 torch._dynamo.config.suppress_errors = True  # skipcq: PYL-W0212  # noqa: SLF001
 
@@ -189,12 +188,12 @@ class ModelABC(ABC, torch.nn.Module):
                 The model after being moved to cpu/gpu.
 
         """
-        device = torch_device(device)
-        model = super().to(device)
+        torch_device = torch.device(device)
+        model = super().to(torch_device)
 
         # If target device istorch.cuda and more
         # than one GPU is available, use DataParallel
-        if device.type == "cuda" and torch.cuda.device_count() > 1:
+        if torch_device.type == "cuda" and torch.cuda.device_count() > 1:
             model = torch.nn.DataParallel(model)  # pragma: no cover
 
         return model
