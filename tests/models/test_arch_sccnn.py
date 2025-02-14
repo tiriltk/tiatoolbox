@@ -12,7 +12,7 @@ from tiatoolbox.utils.misc import select_device
 from tiatoolbox.wsicore.wsireader import WSIReader
 
 
-def _load_sccnn(name: str) -> torch.nn.Module:
+def _load_sccnn(name: str) -> SCCNN:
     """Loads SCCNN model with specified weights."""
     model = SCCNN()
     weights_path = fetch_pretrained_weights(name)

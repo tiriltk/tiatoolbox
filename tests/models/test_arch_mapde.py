@@ -14,7 +14,7 @@ from tiatoolbox.wsicore.wsireader import WSIReader
 ON_GPU = toolbox_env.has_gpu()
 
 
-def _load_mapde(name: str) -> torch.nn.Module:
+def _load_mapde(name: str) -> MapDe:
     """Loads MapDe model with specified weights."""
     model = MapDe()
     weights_path = fetch_pretrained_weights(name)
