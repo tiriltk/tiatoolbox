@@ -47,7 +47,7 @@ Alternatively, if you prefer, you can use your own stain matrix for stain normal
 
 ### 3. Extracting Tissue Mask from Whole Slide Images ([03-tissue-masking](./03-tissue-masking.ipynb))
 
-We call this step, "tissue masking" which is the focus of this example notebook. This notebook shows how to extract tissue regions from a WSI using TIAToolbox with a single line of Python code. WSIs often show large blank (glass) background areas that contain no information. Therefore, it is essential to detect the informative (tissue) region in the WSI before taking any action (like patch extraction and classification).
+WSIs often show large blank (glass) background areas that contain no information. Therefore, it is essential to detect the informative (tissue) region in the WSI before taking any action (like patch extraction and classification). We call this step, "tissue masking" which is the focus of this example notebook. This notebook shows how to extract tissue regions from a WSI using TIAToolbox with a single line of Python code.
 
 [![image](../docs/images/tissue-mask.png)](./03-tissue-masking.ipynb)
 
@@ -65,25 +65,25 @@ Use TIAToolbox for patch-level prediction with a range of deep learning models. 
 
 ### 6. Semantic Segmentation of Whole Slide Images ([06-semantic-segmentation](./06-semantic-segmentation.ipynb))
 
-Use pretrained models to automatically segment different tissue region types in WSIs.
+Use pretrained models to automatically segment different tissue region types in WSIs. _Semantic segmentation_ groups together similar parts of an image that belong to the same class, as in the image immediately above and in the image below. Semantic segmentation of tissue regions plays an important role in developing algorithms for cancer diagnosis and prognosis, as it can help measure tissue attributes in an objective and reproducible fashion. 
 
 [![image](../docs/images/sematic-segment.png)](./06-semantic-segmentation.ipynb)
 
 ### 7. Advanced Model Techniques ([07-advanced-modeling](./07-advanced-modeling.ipynb))
 
-This notebook is aimed at advanced users familiar with object-oriented programming concepts in Python and the TIAToolbox models framework.
+This notebook is aimed at advanced users familiar with object-oriented programming concepts in Python and the TIAToolbox models framework. We demonstrate the use of TIAToolbox models with your current workflow and how you can integrate your solutions into the TIAToolbox model framework. By doing so, you will be able to utilize extensively tested TIAToolbox tools in your experiments and speed up your computational pathology research.
 
 [![image](../docs/images/advanced-techniques.png)](./07-advanced-modeling.ipynb)
 
 ### 8. Nucleus Instance Segmentation in Whole Slide Images Using the HoVer-Net Model ([08-nucleus-instance-segmentation](./08-nucleus-instance-segmentation.ipynb))
 
-Demonstrate the use of the TIAToolbox implementation of the HoVer-Net model for nucleus instance segmentation and classification.
+Demonstrates the use of the TIAToolbox implementation of the [HoVer-Net model](https://www.sciencedirect.com/science/article/pii/S1361841519301045) model for nucleus instance segmentation and classification. Each WSI can contain up to a million nuclei of various types. These can analysed systematically and used for predicting clinical outcomes. Nucleus segmentation and classification must be carried out before using nuclear features in downstream analysis.
 
 [![image](../docs/images/hovernet.png)](./08-nucleus-instance-segmentation.ipynb)
 
 ### 9. Multi-task Segmentation in Whole Slide Images Using the HoVer-Net+ Model ([09-multi-task-segmentation](./09-multi-task-segmentation.ipynb))
 
-Demonstrate the use of the TIAToolbox implementation of the HoVer-Net+ model for nucleus instance segmentation/classification and semantic segmentation of intra-epithelial layers.
+Demonstrates the use of the TIAToolbox implementation of the [HoVer-Net+ model](https://arxiv.org/pdf/2108.13904.pdf) model for nucleus instance segmentation/classification and semantic segmentation of intra-epithelial layers. Each WSI consists of a multitude of different tissue types, each containing many nuclei of varying types. In computational pathology, it is often important to generate tissue specific morphological features for downstream analyses. It can therefore be beneficial to perform multiple tasks such as semantic segmentation of tissue regions and nuclear instance segmentation/classification simultaneously in order to exploit useful information learnt from each task to further advance both tasks.
 
 [![image](../docs/images/hovernetplus.png)](./09-multi-task-segmentation.ipynb)
 
