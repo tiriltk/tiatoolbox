@@ -65,7 +65,7 @@ Use TIAToolbox for patch-level prediction with a range of deep learning models. 
 
 ### 6. Semantic Segmentation of Whole Slide Images ([06-semantic-segmentation](./06-semantic-segmentation.ipynb))
 
-Use pretrained models to automatically segment different tissue region types in WSIs. _Semantic segmentation_ groups together similar parts of an image that belong to the same class, as in the image immediately above and in the image below. Semantic segmentation of tissue regions plays an important role in developing algorithms for cancer diagnosis and prognosis, as it can help measure tissue attributes in an objective and reproducible fashion. 
+Use pretrained models to automatically segment different tissue region types in WSIs. _Semantic segmentation_ groups together similar parts of an image that belong to the same class, as in the image immediately above and in the image below. Semantic segmentation of tissue regions plays an important role in developing algorithms for cancer diagnosis and prognosis, as it can help measure tissue attributes in an objective and reproducible fashion.
 
 [![image](../docs/images/sematic-segment.png)](./06-semantic-segmentation.ipynb)
 
