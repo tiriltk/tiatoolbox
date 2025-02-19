@@ -28,31 +28,38 @@ Below is a list of our Jupyter notebooks, with brief descriptions of the TIATool
 
 ### 1. Reading Whole Slide Images ([01-wsi-reading](./01-wsi-reading.ipynb))
 
-This notebook shows how to use TIAToolbox to read different kinds of WSIs. TIAToolbox provides a uniform interface to various WSI formats. Learn some well-known techniques for WSI masking and patch extraction.
+This notebook shows how to use TIAToolbox to read different kinds of WSIs. TIAToolbox provides a uniform interface to various WSI formats. To see what formats are dealt with, click [here](https://tia-toolbox.readthedocs.io/en/latest/usage.html?highlight=wsiread#tiatoolbox.wsicore.wsireader.WSIReader) and then search for _format_. In this notebook, you will learn some well-known techniques for WSI masking and patch extraction.
 
 [![image](../docs/images/wsi-reading.png)](./01-wsi-reading.ipynb)
 
 ### 2. Stain Normalization of Histology Images ([02-stain-normalization](./02-stain-normalization.ipynb))
 
-Stain normalization is a common pre-processing step in computational pathology to reduce color variation that has no clinical significance. TIAToolbox offers several stain-normalization algorithms, including Reinhard, Ruifork, Macenko, and Vahadane.
+Stain normalization is a common pre-processing step in computational pathology to reduce color variation that has no clinical significance. This variation may be caused by using different scanners, different staining protocols and practices, staining agents that have been left on the laboratory shelf for different lengths of time, different settings when using the scanner, etc. It has been shown in many studies that stain normalization can make an algorithm more robust against such differences. TIAToolbox offers several stain-normalization algorithms, including:
+
+- Reinhard stain normalization
+- Ruifork
+- Macenko
+- Vahadane.
+
+Alternatively, if you prefer, you can use your own stain matrix for stain normalization. In the images below, the object of an algorithm is to change to source image to make its colours similar to those in the target image.
 
 [![image](../docs/images/stain-norm-example.png)](./02-stain-normalization.ipynb))
 
 ### 3. Extracting Tissue Mask from Whole Slide Images ([03-tissue-masking](./03-tissue-masking.ipynb))
 
-This notebook shows how to extract tissue regions from a WSI using TIAToolbox with a single line of Python code.
+We call this step, "tissue masking" which is the focus of this example notebook. This notebook shows how to extract tissue regions from a WSI using TIAToolbox with a single line of Python code. WSIs often show large blank (glass) background areas that contain no information. Therefore, it is essential to detect the informative (tissue) region in the WSI before taking any action (like patch extraction and classification).
 
 [![image](../docs/images/tissue-mask.png)](./03-tissue-masking.ipynb)
 
 ### 4. Extracting Patches from Whole Slide Images ([04-patch-extraction](./04-patch-extraction.ipynb))
 
-Learn how to use TIAToolbox to extract patches from large histology images based on point annotations or using a fixed-size sliding window.
+Learn how to use TIAToolbox to extract patches from large histology images based on point annotations or using a fixed-size sliding window. The patch extraction module of TIAToolbox supports mask-based patch extraction which means you can extract (overlapping, if you prefer) patches from a certain region of WSI (for example a region consisting of a particular type of tissue).
 
 [![image](../docs/images/patch-extraction.png)](./04-patch-extraction.ipynb)
 
 ### 5. Patch Prediction in Whole Slide Images ([05-patch-prediction](./05-patch-prediction.ipynb))
 
-Use TIAToolbox for patch-level prediction with a range of deep learning models. Predict the type of patches in a WSI with just two lines of Python code.
+Use TIAToolbox for patch-level prediction with a range of deep learning models. Predict the type of patches in a WSI with just two lines of Python code. TIAToolbox can be used to make predictions on pre-extracted image patches or on larger image tiles / whole-slide images (WSIs), where image patches are extracted on the fly. For example, in colorectal cancer, TIAToolbox can classify whole slide image regions into nine different categories (Empty glass, Lymphocytes, Normal colon mucosa, Debris, Smooth muscle, Cancer-associated stroma, Adipose, Mucus, Colorectal adenocarcinoma epithelium).
 
 [![image](../docs/images/patch-prediction.png)](./05-patch-prediction.ipynb)
 
@@ -82,13 +89,15 @@ Demonstrate the use of the TIAToolbox implementation of the HoVer-Net+ model for
 
 ### 10. Image Alignment ([10-wsi_registration](./10-wsi-registration.ipynb))
 
-Show how to use TIAToolbox for registration of an image pair using Deep Feature Based Registration (DFBR) followed by non-rigid alignment using SimpleITK.
+Shows how to use TIAToolbox for registration of an image pair using [Deep Feature Based Registration (DFBR)](https://arxiv.org/pdf/2202.09971.pdf) followed by non-rigid alignment using [SimpleITK](https://simpleitk.readthedocs.io/en/master/registrationOverview.html). The registration tool in the TIAToolbox also comprises a pre-alignment step, a pre-requisite to DFBR. In this example, the affine transformation is computed using thumbnails of the fixed and moving images. The estimated transformation is then used to extract corresponding tiles from both fixed and moving images at a higher magnification level. The non-rigid deformation between the two tiles is then dealt with using the SimpleITK.
+
+[1] Awan, Ruqayya, et al. "Deep Feature based Cross-slide Registration." arXiv preprint arXiv:2202.09971 (2022).
 
 [![image](../docs/images/wsi-registration.png)](./10-wsi-registration.ipynb)
 
 ### 11. Feature Extraction Using Foundation Models ([11-import-foundation-models](./11-import-foundation-models.ipynb))
 
-Explain how to extract features from WSIs using pre-trained models from the `timm` library.
+Explains how to extract features from WSIs using pre-trained models from the `timm` library. The notebook guides users through selecting appropriate model architectures, visualizing the extracted features using `UMAP` feature embedding, and verifying the model's performance by checking if different tissue types are correctly identified and separated in the feature map.
 
 [![image](../docs/images/feature_extraction.png)](./11-import-foundation-models.ipynb)
 
@@ -111,9 +120,9 @@ Prediction of molecular pathways and key mutations directly from Haematoxylin an
 
 ### 2. Prediction of HER2 Status in Breast Cancer from H&E Stained Whole Slide Images
 
-Demonstrate how to use TIAToolbox to reproduce the SlideGraph+ method to predict HER2 status of breast cancer samples from H&E stained WSIs.
+Demonstrates how to use TIAToolbox to reproduce the ["SlideGraph+ method" ("SlideGraph+: Whole Slide Image-Level Graphs to Predict HER2Status in Breast Cancer" by Lu et al. (2021))](https://arxiv.org/abs/2110.06042) to predict HER2 status of breast cancer samples from H&E stained WSIs. As a brief overview, this method involves several steps generating a graph that represents a WSI. The graph is then fed into a special convolutional graph network, called SlideGraph, to predict whether that WSI is HER2 negative or positive.
 
-- Example notebook on training the SlideGraph model: slide-graph for training
-- Example notebook on using SlideGraph model for WSI inference: slide-graph for inference
+- Example notebook on training the SlideGraph model: [slide-graph for training](./full-pipelines/slide-graph.ipynb)
+- Example notebook on using SlideGraph model for WSI inference: [slide-graph for inference](./inference-pipelines/slide-graph.ipynb)
 
 [![image](../docs/images/her2-prediction-example.png)](./inference-pipelines/slide-graph.ipynb)
