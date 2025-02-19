@@ -105,38 +105,24 @@ def _get_timm_architecture(
         model = timm.create_model(arch_name, pretrained=pretrained)
         return nn.Sequential(*list(model.children())[:-1])
 
-    if arch_name == "UNI":  # pragma: no cover
+    arch_map = {
         # UNI tile encoder: https://huggingface.co/MahmoodLab/UNI
-        # Coverage skipped timm API is tested using efficient U-Net.
-        return timm.create_model(
-            "hf-hub:MahmoodLab/UNI",
-            pretrained=pretrained,
-            init_values=1e-5,
-            dynamic_img_size=True,
-        )
-
-    if arch_name == "prov-gigapath":  # pragma: no cover
+        "UNI": {
+            "model": "hf-hub:MahmoodLab/UNI",
+            "init_values": 1e-5,
+            "dynamic_img_size": True,
+        },
         # Prov-GigaPath tile encoder: https://huggingface.co/prov-gigapath/prov-gigapath
-        # Coverage skipped timm API is tested using efficient U-Net.
-        return timm.create_model(
-            "hf_hub:prov-gigapath/prov-gigapath",
-            pretrained=pretrained,
-        )
-
-    if arch_name == "H-optimus-0":  # pragma: no cover
+        "prov-gigapath": {"model": "hf_hub:prov-gigapath/prov-gigapath"},
         # H-Optimus-0 tile encoder: https://huggingface.co/bioptimus/H-optimus-0
-        # Coverage skipped timm API is tested using efficient U-Net.
-        return timm.create_model(
-            "hf-hub:bioptimus/H-optimus-0",
-            pretrained=pretrained,
-            init_values=1e-5,
-            dynamic_img_size=False,
-        )
-
-    if arch_name == "UNI2":  # pragma: no cover
+        "H-optimus-0": {
+            "model": "hf-hub:bioptimus/H-optimus-0",
+            "init_values": 1e-5,
+            "dynamic_img_size": False,
+        },
         # UNI2-h tile encoder: https://huggingface.co/MahmoodLab/UNI2-h
-        # Coverage skipped timm API is tested using efficient U-Net.
-        timm_kwargs = {
+        "UNI2": {
+            "model": "hf-hub:MahmoodLab/UNI2-h",
             "img_size": 224,
             "patch_size": 14,
             "depth": 24,
@@ -150,40 +136,36 @@ def _get_timm_architecture(
             "act_layer": torch.nn.SiLU,
             "reg_tokens": 8,
             "dynamic_img_size": True,
-        }
-        return timm.create_model(
-            "hf-hub:MahmoodLab/UNI2-h",
-            pretrained=pretrained,
-            **timm_kwargs,
-        )
-
-    if arch_name == "Virchow":  # pragma: no cover
+        },
         # Virchow tile encoder: https://huggingface.co/paige-ai/Virchow
-        # Coverage skipped timm API is tested using efficient U-Net.
-        return timm.create_model(
-            "hf_hub:paige-ai/Virchow",
-            pretrained=pretrained,
-            mlp_layer=SwiGLUPacked,
-            act_layer=torch.nn.SiLU,
-        )
-
-    if arch_name == "Virchow2":  # pragma: no cover
+        "Virchow": {
+            "model": "hf_hub:paige-ai/Virchow",
+            "mlp_layer": SwiGLUPacked,
+            "act_layer": torch.nn.SiLU,
+        },
         # Virchow2 tile encoder: https://huggingface.co/paige-ai/Virchow2
-        # Coverage skipped timm API is tested using efficient U-Net.
-        return timm.create_model(
-            "hf_hub:paige-ai/Virchow2",
-            pretrained=pretrained,
-            mlp_layer=SwiGLUPacked,
-            act_layer=torch.nn.SiLU,
-        )
+        "Virchow2": {
+            "model": "hf_hub:paige-ai/Virchow2",
+            "mlp_layer": SwiGLUPacked,
+            "act_layer": torch.nn.SiLU,
+        },
+        # Kaiko tile encoder:
+        # https://huggingface.co/1aurent/vit_large_patch14_reg4_224.kaiko_ai_towards_large_pathology_fms
+        "kaiko": {
+            "model": (
+                "hf_hub:1aurent/"
+                "vit_large_patch14_reg4_224.kaiko_ai_towards_large_pathology_fms"
+            ),
+            "dynamic_img_size": True,
+        },
+    }
 
-    if arch_name == "kaiko":  # pragma: no cover
-        # Kaiko tile encoder: https://huggingface.co/1aurent/vit_large_patch14_reg4_224.kaiko_ai_towards_large_pathology_fms
+    if arch_name in arch_map:  # pragma: no cover
         # Coverage skipped timm API is tested using efficient U-Net.
         return timm.create_model(
-            "hf_hub:1aurent/vit_large_patch14_reg4_224.kaiko_ai_towards_large_pathology_fms",
+            arch_map[arch_name].pop("model"),
             pretrained=pretrained,
-            dynamic_img_size=True,
+            **arch_map[arch_name],
         )
 
     msg = f"Backbone {arch_name} not supported. "
@@ -510,14 +492,14 @@ class TimmBackbone(ModelABC):
     Args:
         backbone (str):
             Model name. Currently, the tool supports following
-             model names and their default associated weights from timm.
-             - "efficientnet_b{i}" for i in [0, 1, ..., 7]
-             - "UNI"
-             - "prov-gigapath"
-             - "UNI2"
-             - "Virchow"
-             - "Virchow2"
-             - "kaiko"
+              model names and their default associated weights from timm.
+                - "efficientnet_b{i}" for i in [0, 1, ..., 7]
+                - "UNI"
+                - "prov-gigapath"
+                - "UNI2"
+                - "Virchow"
+                - "Virchow2"
+                - "kaiko"
         pretrained (bool, keyword-only):
             Whether to load pretrained weights.
 
