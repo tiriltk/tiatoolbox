@@ -77,13 +77,13 @@ This notebook is aimed at advanced users familiar with object-oriented programmi
 
 ### 8. Nucleus Instance Segmentation in Whole Slide Images Using the HoVer-Net Model ([08-nucleus-instance-segmentation](./08-nucleus-instance-segmentation.ipynb))
 
-Demonstrates the use of the TIAToolbox implementation of the [HoVer-Net model](https://www.sciencedirect.com/science/article/pii/S1361841519301045) model for nucleus instance segmentation and classification. Each WSI can contain up to a million nuclei of various types. These can analysed systematically and used for predicting clinical outcomes. Nucleus segmentation and classification must be carried out before using nuclear features in downstream analysis.
+Demonstrates the use of the TIAToolbox implementation of the [HoVer-Net model](https://www.sciencedirect.com/science/article/pii/S1361841519301045) for nucleus instance segmentation and classification. Each WSI can contain up to a million nuclei of various types. These can analysed systematically and used for predicting clinical outcomes. Nucleus segmentation and classification must be carried out before using nuclear features in downstream analysis.
 
 [![image](../docs/images/hovernet.png)](./08-nucleus-instance-segmentation.ipynb)
 
 ### 9. Multi-task Segmentation in Whole Slide Images Using the HoVer-Net+ Model ([09-multi-task-segmentation](./09-multi-task-segmentation.ipynb))
 
-Demonstrates the use of the TIAToolbox implementation of the [HoVer-Net+ model](https://arxiv.org/pdf/2108.13904.pdf) model for nucleus instance segmentation/classification and semantic segmentation of intra-epithelial layers. Each WSI consists of a multitude of different tissue types, each containing many nuclei of varying types. In computational pathology, it is often important to generate tissue specific morphological features for downstream analyses. It can therefore be beneficial to perform multiple tasks such as semantic segmentation of tissue regions and nuclear instance segmentation/classification simultaneously in order to exploit useful information learnt from each task to further advance both tasks.
+Demonstrates the use of the TIAToolbox implementation of the [HoVer-Net+ model](https://openaccess.thecvf.com/content/ICCV2021W/CDPath/papers/Shephard_Simultaneous_Nuclear_Instance_and_Layer_Segmentation_in_Oral_Epithelial_Dysplasia_ICCVW_2021_paper.pdf) for nucleus instance segmentation/classification and semantic segmentation of intra-epithelial layers. Each WSI consists of a multitude of different tissue types, each containing many nuclei of varying types. In computational pathology, it is often important to generate tissue specific morphological features for downstream analyses. It can therefore be beneficial to perform multiple tasks such as semantic segmentation of tissue regions and nuclear instance segmentation/classification simultaneously in order to exploit useful information learnt from each task to further advance both tasks.
 
 [![image](../docs/images/hovernetplus.png)](./09-multi-task-segmentation.ipynb)
 
