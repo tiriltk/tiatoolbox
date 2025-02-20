@@ -3,16 +3,10 @@
 Visualization Interface Usage
 =============================
 
-.. contents:: Table of Contents
-   :depth: 2
-   :local:
-
 TIAToolbox provides a flexible visualization tool for viewing slides and overlaying associated model outputs or annotations. It is a browser-based UI built using TIAToolbox and `Bokeh <https://bokeh.org/>`_. The following assumes TIAToolbox has been installed per the instructions here: :ref:`Installation <installation>`.
 
-Launching the Interface
------------------------
-
-### 1. Start the Interface
+1. Launching the Interface
+--------------------------
 
 Start the interface using the command::
 
@@ -30,7 +24,9 @@ If you need to change the port on which the interface is launched from the defau
 
 Though in most cases this should not be necessary.
 
-### 2. Launching on a Remote Machine
+Launching on a remote machine
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 As the UI is browser-based, you can launch the interface on a remote machine by logging in via ssh and forwarding the relevant ports so that the visualization of the remote slides and overlays can be viewed in the browser on your local machine. For example, connect via ssh to your remote machine::
 
@@ -40,8 +36,10 @@ This will start an ssh session where the two ports the interface uses by default
 
 You can then launch the interface on the remote machine as above (TIAToolbox must be installed on the remote machine) and open the browser on your local machine. Navigate to ``localhost:5006`` to view the interface.
 
-General UI Controls and Options
--------------------------------
+.. _interface:
+
+2. General UI Controls and Options
+----------------------------------
 
 .. image:: images/visualize_interface.png
     :width: 100%
@@ -54,7 +52,8 @@ The main window can be zoomed in and out using the mouse wheel and panned by cli
 
 Information about the currently open slide can be found below the main window including slide name, dimensions, and level resolution information.
 
-### Type and Layer Select
+Type and layer select
+^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: images/type_select.png
     :width: 30%
@@ -63,7 +62,8 @@ Information about the currently open slide can be found below the main window in
 
 If annotations have a type property, this will be used to populate the type select boxes. This allows you to toggle on/off annotations of a specific type. You can also modify the default colors that each type is displayed in by using the color picker widgets next to each type name (note these will only have an effect if the property to color by is selected as 'type'). Individual image overlays or graph overlays will also get their own toggle, labelled for example 'layer_i' or 'nodes', that can be used to toggle the respective overlays on or off.
 
-### Colormaps/Coloring by Property Values
+Colormaps/coloring by property values
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once you have selected a slide with the slide dropdown, you can add overlays by repeatedly choosing files containing overlays from the overlay drop menu. They will be overlaid on the slide as separate layers. In the case of segmentations, if your segmentations have the 'type' property as one of their properties, this can additionally be used to show/hide annotations of that specific type. Colors can be individually selected for each type also if the randomly generated color scheme is not suitable.
 
@@ -71,13 +71,15 @@ You can select the property that will be used to color annotations in the color_
 
 The 'color type by property' box allows annotations of the specified type to be colored by a different property to the 'global' one. For example, this could be used to have all detections colored according to their type, but for Glands, color by some feature describing them instead (their area, for example).
 
-### Running Models
+Running models
+^^^^^^^^^^^^^^
 
 Regions of the image can be selected, using either a box select or points, which can be sent to a model via selecting the model in the drop-down menu and then clicking go. Available so far is hovernet, and nuclick will likely be added in the future.
 
 To save the annotations resulting from a model, or loaded from a .geojson or .dat (will be saved as a SQLiteStore .db file which will be far quicker to load) use the save button (for the moment it is just saved in a file '{slide_name}\_saved_anns.db' in the overlays folder).
 
-### Dual Window Mode
+Dual window mode
+^^^^^^^^^^^^^^^^
 
 .. image:: images/dual_win.png
     :width: 100%
@@ -86,7 +88,8 @@ To save the annotations resulting from a model, or loaded from a .geojson or .da
 
 A second window can be opened by selecting the 'window 2' tab in the top right. This will open the currently selected slide in a second window as illustrated above. The overlay shown in each window can be controlled independently to allow comparison of different overlays, or viewing of a model output side-by-side with the raw image (slide), or ground truth annotations. Slide navigation will be linked between both windows. Two different slides can also be opened in the two windows, although this will only be useful in cases where the two slides are registered so that a shared coordinate space/slide navigation makes sense.
 
-### Inspecting Annotations
+Inspecting annotations
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: images/properties_window.png
     :width: 40%
@@ -95,11 +98,13 @@ A second window can be opened by selecting the 'window 2' tab in the top right. 
 
 Annotations can be inspected by double-clicking on them. This will open a popup showing the annotation in more detail, and allowing the properties to be viewed in a sortable table. An example can be seen to the right for a patch prediction overlay where multiple targets have been predicted for each patch.
 
-### Zoomed Out Plotting
+Zoomed out plotting
+^^^^^^^^^^^^^^^^^^^
 
 By default, the interface is set up to show only larger annotations while zoomed out. Smaller annotations which would be too small to see clearly while zoomed out will not be displayed. The 'max-scale' value can be changed to control the zoom level at which this happens. A larger value will mean smaller annotations remain visible at more zoomed out scale. If you want all annotations to be displayed always regardless of zoom, just type in a large value (1000+) to set it to its max. In the case of very many annotations, this may result in some loading lag when zoomed out.
 
-### Other Options
+Other options
+^^^^^^^^^^^^^
 
 There are a few options for how annotations are displayed. You can change the colormap used in the colormap field if you are coloring objects according to a continuous property (values should be between 0-1), by choosing one of the matplotlib cmaps. The buttons 'filled', 'mpp', 'grid', respectively toggle between filled and outline only rendering of annotations, using mpp or baseline pixels as the scale for the plot, and showing a grid overlay.
 
@@ -107,14 +112,17 @@ A filter can be applied to annotations using the filter box. For example, enteri
 
 The main slide view can be made fullscreen by clicking the fullscreen icon in the small toolbar to the immediate right of the main window. This toolbar also provides a button to save the current view as a .png file.
 
-Data Format Conventions and File Structure
-------------------------------------------
+.. _data_format:
+
+3. Data Format Conventions and File Structure
+---------------------------------------------
 
 In the slides folder should be all the slides you want to use, and the overlays folder should contain whatever graphs, segmentations, heatmaps etc you are interested in overlaying over the slides.
 
 When a slide is selected in the interface, any valid overlay file that can be found that *contains the same name* (not including extension) will be available to overlay upon it.
 
-### Segmentation
+Segmentation
+^^^^^^^^^^^^
 
 .. image:: images/vis_gland_cmap.png
     :width: 45%
@@ -159,17 +167,20 @@ TIAToolbox also provides a function to convert the output of PatchPredictor to a
 
 If your data is not in one of these formats, it is usually fairly straightforward to build an annotation store out of your model outputs. A small script of 6-10 lines is usually all that is required. There are example code snippets illustrating how to create an annotation store in a variety of common scenarios in the examples section. Most use-cases should be covered in there, or something close enough that a few tweaks to a snippet will do what is needed.
 
-### Heatmaps
+Heatmaps
+^^^^^^^^
 
 These should be provided as a low-res heatmap in .jpg or .png format. It should be the same aspect ratio as the WSI it will be overlaid on. When creating the image, keep in mind that black pixels (0,0,0) will be made transparent.
 
 Single channel images can also be used but are not recommended; they should take values between 0 and 255 and will simply be put through a viridis colormap. 0 values will become white background.
 
-### Whole Slide Overlays
+Whole Slide Overlays
+^^^^^^^^^^^^^^^^^^^^
 
 It is possible to overlay multiple WSI's on top of each other as separate layers simply by selecting them in the overlays dropdown, though if the visualization task can be achieved using another form of overlay, that would be recommended as it will usually be more flexible and faster to load.
 
-### Graphs
+Graphs
+^^^^^^
 
 .. image:: images/vis_graph.png
     :width: 45%
@@ -198,10 +209,13 @@ Additional features can be added to nodes by adding extra keys to the dictionary
 
 It will be possible to color the nodes by these features in the interface, and the top 10 will appear in a tooltip when hovering over a node (you will have to turn on the hovertool in the small toolbar to the right of the main window to enable this, it is disabled by default.)
 
-Annotation Store Examples
--------------------------
+.. _examples:
 
-### Patch Predictions
+4. Annotation Store examples
+----------------------------
+
+Patch Predictions
+^^^^^^^^^^^^^^^^^
 
 Let's say you have patch level predictions for a model. The top left corner of each patch, and two predicted scores are in a .csv file. Patch size is 512.
 
@@ -223,7 +237,8 @@ Let's say you have patch level predictions for a model. The top left corner of e
 
 When loading the above in the interface, you will be able to select any of the properties to color the overlay by.
 
-### GeoJSON Outputs
+GeoJSON outputs
+^^^^^^^^^^^^^^^
 
 While .geojson files can be loaded in the interface directly, it is often more convenient to convert them to a .db file first, as this will avoid the delay while the geojson is converted to an annotation store. The TIAToolbox AnnotationStore class provides a method to do this.
 
@@ -233,7 +248,8 @@ While .geojson files can be loaded in the interface directly, it is often more c
     db1 = SQLiteStore.from_geojson(geojson_path)
     db1.dump("path/to/annotations.db")
 
-### Raw Contours and Properties
+Raw contours and properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you have a collection of raw centroids or detection contours with corresponding properties/scores, you can easily convert these to an annotation store.
 
@@ -260,7 +276,8 @@ If you have a collection of raw centroids or detection contours with correspondi
 
 Note that in the above we saved the 'class' property as 'type' - this is because the UI treats the 'type' property as a special property, and will allow you to toggle annotations of a specific type on/off, in addition to other functionality.
 
-### Graphs Example
+Graphs example
+^^^^^^^^^^^^^^
 
 Let's say you have a graph defined by nodes and edges, and associated node properties. The following example demonstrates how to package this into a .json file
 
@@ -275,7 +292,8 @@ Let's say you have a graph defined by nodes and edges, and associated node prope
     with open("path/to/graph.json", "w") as f:
         json.dump(graph_dict, f)
 
-### Modifying an Existing Annotation Store
+Modifying an existing annotation store
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you have an existing annotation store and want to add/change properties of annotations (or can also do similarly for geometry)
 
@@ -297,7 +315,8 @@ If you have an existing annotation store and want to add/change properties of an
         db.keys(), properties_iter=new_props
     )  # replace the properties dict for each annotation
 
-### Merging Two Annotation Stores
+Merging two annotation stores
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The interface will only open one annotation store at a time. If you have annotations belonging to the same slide in different stores that you want to display at the same time, just put them all in the same store as follows
 
@@ -308,7 +327,8 @@ The interface will only open one annotation store at a time. If you have annotat
     anns = list(db1.items())
     db2.append_many(anns)  # db2 .db file now contains all annotations from db1 too
 
-### Shifting Coordinates
+Shifting coordinates
+^^^^^^^^^^^^^^^^^^^^
 
 Let's say you have some annotations that were created on a slide, and you want to grab the annotations in a particular region and display them on a tile from that slide. You will need their coordinates to be relative to the tile. You can do this as follows
 
@@ -334,8 +354,8 @@ Let's say you have some annotations that were created on a slide, and you want t
 
 .. _config:
 
-Config Files
-------------
+5. Config files
+---------------
 
 A JSON config file can be placed in the overlays folder, to customize various aspects of the UI and annotation display when visualizing overlays in that location. This is especially useful for customising online demos. An example .json explaining all the fields is shown below.
 
