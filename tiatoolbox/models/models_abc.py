@@ -70,7 +70,9 @@ class ModelABC(ABC, torch.nn.Module):
 
     @abstractmethod
     # This is generic abc, else pylint will complain
-    def forward(self: ModelABC, *args: tuple[Any, ...], **kwargs: dict) -> None:
+    def forward(
+        self: ModelABC, *args: tuple[Any, ...], **kwargs: dict
+    ) -> None | torch.Tensor:
         """Torch method, this contains logic for using layers defined in init."""
         ...  # pragma: no cover
 
@@ -176,6 +178,9 @@ class ModelABC(ABC, torch.nn.Module):
     def to(  # type: ignore[override]
         self: ModelABC,
         device: str = "cpu",
+        dtype: torch.dtype | None = None,
+        *,
+        non_blocking: bool = False,
     ) -> ModelABC | torch.nn.DataParallel[ModelABC]:
         """Transfers model to cpu/gpu.
 
@@ -184,6 +189,11 @@ class ModelABC(ABC, torch.nn.Module):
                 PyTorch defined model.
             device (str):
                 Transfers model to the specified device. Default is "cpu".
+            dtype (:class:`torch.dtype`): the desired floating point or complex dtype of
+                the parameters and buffers in this module.
+            non_blocking (bool): When set, it tries to convert/move asynchronously
+                with respect to the host if possible, e.g., moving CPU Tensors with
+                pinned memory to CUDA devices.
 
         Returns:
             torch.nn.Module | torch.nn.DataParallel:
@@ -191,7 +201,7 @@ class ModelABC(ABC, torch.nn.Module):
 
         """
         torch_device = torch.device(device)
-        model = super().to(torch_device)
+        model = super().to(torch_device, dtype=dtype, non_blocking=non_blocking)
 
         # If target device istorch.cuda and more
         # than one GPU is available, use DataParallel
