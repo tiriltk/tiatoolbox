@@ -46,10 +46,10 @@ def is_torch_compile_compatible() -> bool:
 
 
 def compile_model(
-    model: nn.Module | None = None,
+    model: nn.Module,
     *,
     mode: str = "default",
-) -> nn.Module | None:
+) -> nn.Module:
     """A decorator to compile a model using torch-compile.
 
     Args:
