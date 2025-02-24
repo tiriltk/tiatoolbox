@@ -48,6 +48,7 @@ def _get_architecture(
     Example:
         >>> model = _get_architecture("resnet18")
         >>> print(model)
+
     """
     backbone_dict = {
         "alexnet": torch_models.alexnet,
@@ -116,6 +117,7 @@ def _get_timm_architecture(
     Example:
         >>> model = _get_timm_architecture("UNI", pretrained=True)
         >>> print(model)
+    
     """
     if arch_name in [f"efficientnet_b{i}" for i in range(8)]:
         model = timm.create_model(arch_name, pretrained=pretrained)
@@ -296,6 +298,7 @@ class CNNModel(ModelABC):
         Returns:
             torch.Tensor:
                 The output logits after passing through the model.
+        
         """
         feat = self.feat_extract(imgs)
         gap_feat = self.pool(feat)
@@ -316,6 +319,7 @@ class CNNModel(ModelABC):
         Returns:
             np.ndarray:
                 The post-processed image array.
+        
         """
         return _postproc(image=image)
 
@@ -341,6 +345,7 @@ class CNNModel(ModelABC):
         Example:
             >>> output = _infer_batch(model, batch_data, "cuda")
             >>> print(output)
+        
         """
         return _infer_batch(model=model, batch_data=batch_data, device=device)
 
@@ -381,6 +386,7 @@ class TimmModel(ModelABC):
         >>> model = TimmModel("UNI", pretrained=True)
         >>> output = model(torch.randn(1, 3, 224, 224))
         >>> print(output.shape)
+    
     """
 
     def __init__(
@@ -534,6 +540,7 @@ class CNNBackbone(ModelABC):
         Returns:
             torch.Tensor:
                 The extracted features.
+        
         """
         feat = self.feat_extract(imgs)
         gap_feat = self.pool(feat)
@@ -565,6 +572,7 @@ class CNNBackbone(ModelABC):
         Example:
             >>> output = CNNBackbone.infer_batch(model, batch_data, "cuda")
             >>> print(output)
+        
         """
         return [_infer_batch(model=model, batch_data=batch_data, device=device)]
 
@@ -652,5 +660,6 @@ class TimmBackbone(ModelABC):
         Example:
             >>> output = TimmBackbone.infer_batch(model, batch_data, "cuda")
             >>> print(output)
+        
         """
         return [_infer_batch(model=model, batch_data=batch_data, device=device)]
