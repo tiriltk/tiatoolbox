@@ -202,7 +202,7 @@ def _postproc(image: np.ndarray) -> np.ndarray:
     Returns:
         np.ndarray:
             The post-processed image array.
-    
+
     """
     return np.argmax(image, axis=-1)
 
@@ -232,7 +232,7 @@ def _infer_batch(
     Example:
         >>> output = _infer_batch(model, batch_data, "cuda")
         >>> print(output)
-    
+
     """
     img_patches_device = batch_data.to(device=device).type(
         torch.float32,
@@ -274,7 +274,7 @@ class CNNModel(ModelABC):
         >>> model = CNNModel("resnet18", num_classes=2)
         >>> output = model(torch.randn(1, 3, 224, 224))
         >>> print(output.shape)
-    
+
     """
 
     def __init__(self: CNNModel, backbone: str, num_classes: int = 1) -> None:
@@ -423,7 +423,7 @@ class TimmModel(ModelABC):
         Returns:
             torch.Tensor:
                 The output logits after passing through the model.
-        
+
         """
         feat = self.feat_extract(imgs)
         feat = torch.flatten(feat, 1)
@@ -634,7 +634,7 @@ class TimmBackbone(ModelABC):
         Returns:
             torch.Tensor:
                 The extracted features.
-        
+
         """
         feats = self.feat_extract(imgs)
         return torch.flatten(feats, 1)
