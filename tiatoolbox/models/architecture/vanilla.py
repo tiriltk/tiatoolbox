@@ -256,7 +256,7 @@ class CNNModel(ModelABC):
 
     Args:
         backbone (str):
-            Name of the CNN model backbone (e.g. "resnet18", "densenet121").
+            Name of the CNN model backbone (e.g., "resnet18", "densenet121").
         num_classes (int):
             Number of classes output by model. Defaults to 1.
 
