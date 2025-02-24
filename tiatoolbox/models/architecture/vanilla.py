@@ -138,6 +138,12 @@ def _get_timm_architecture(
             "init_values": 1e-5,
             "dynamic_img_size": False,
         },
+        # H-Optimus-1 tile encoder: https://huggingface.co/bioptimus/H-optimus-1
+        "H-optimus-1": {
+            "model": "hf-hub:bioptimus/H-optimus-1",
+            "init_values": 1e-5,
+            "dynamic_img_size": False,
+        },
         # UNI2-h tile encoder: https://huggingface.co/MahmoodLab/UNI2-h
         "UNI2": {
             "model": "hf-hub:MahmoodLab/UNI2-h",
@@ -369,6 +375,8 @@ class TimmModel(ModelABC):
              - "Virchow"
              - "Virchow2"
              - "kaiko"
+             - "H-optimus-0"
+             - "H-optimus-1"
         num_classes (int):
             Number of classes output by model.
         pretrained (bool, keyword-only):
@@ -596,6 +604,8 @@ class TimmBackbone(ModelABC):
                 - "Virchow"
                 - "Virchow2"
                 - "kaiko"
+                - "H-optimus-0"
+                - "H-optimus-1"
         pretrained (bool, keyword-only):
             Whether to load pretrained weights.
 
