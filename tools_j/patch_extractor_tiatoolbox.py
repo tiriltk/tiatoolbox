@@ -7,7 +7,6 @@ from pathlib import Path
 import os
 from PIL import Image
 import sys
-import os
 
 # Get the path to the project root directory
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -27,8 +26,8 @@ def extract_patches_wsi(wsi_path : str | Path, patch_save_path : Path, mask_path
     # Print pixels along x- and y axis for wsi
     print(f"wsi dim: {dim}")
 
-    nr_extra_pixels = 0        # Number of extra pixels per patch
-    pixels = 2048                # Pixels along x- and y- axis for each patch before extra pixels are added. x and y must have same number of pixels if processed with aug_hovernet.
+    nr_extra_pixels = 0          # Number of extra pixels per patch
+    pixels = 2048                # Pixels along x- and y- axis for each patch before extra pixels are added. x and y must have same number of pixels in numbers of 2^x if processed with aug_hovernet.
     nr_pixels_overlap = 100     # Number of pixels overlap between patches
     # number of pixels along x- and y axis for each patch
     x = pixels + nr_extra_pixels
@@ -53,8 +52,8 @@ def extract_patches_wsi(wsi_path : str | Path, patch_save_path : Path, mask_path
 
 def extract_patches(image_path : str | Path, patch_save_path : Path):
 
-    nr_extra_pixels = 50        # Number of extra pixels per patch
-    pixels = 4096               # Pixels along x- and y- axis for each patch before extra pixels are added. x and y must have same number of pixels if processed with aug_hovernet.
+    nr_extra_pixels = 0        # Number of extra pixels per patch
+    pixels = 2048               # Pixels along x- and y- axis for each patch before extra pixels are added. x and y must have same number of pixels if processed with aug_hovernet.
     nr_pixels_overlap = 100     # Number of pixels overlap between patches
     # number of pixels along x- and y axis for each patch
     x = pixels + nr_extra_pixels
@@ -79,13 +78,15 @@ if __name__ == "__main__":
 
     # wsi_path = "/media/.../Pyramidal_TIFF_files/.../Pyramidal_wsi.tif"
     # image_path = "/media/.../patch_x.png"
-    wsi_path = "/media/jenny/PRIVATE_USB/warwick_colab/Pyramidal_TIFF_files/HE_MM009_B_270125_20x_BF_01/Pyramidal_HE_MM009_B_270125_20x_BF_01.tif"
-    patch_save_path = Path("/media/jenny/PRIVATE_USB/warwick_colab_patches/HE_MM009_B_270125_20x_BF_01/4096x4096/")
+    # wsi_path = "/media/jenny/Expansion/MM_HE_pyramidal_tiff/Pyramidal_HE_MM179_B_70225_20x_BF_01.tif"
+    # patch_save_path = Path("/media/jenny/Expansion/MM_HE_patches/HE_MM179_B_70225_20x_BF_01/aughovernet/2048x2048/")
+    image_path = "/media/jenny/Expansion/MM_HE_masks/HE_MM179_2C_290125_20x_BF_01/HE_MM179_2C_290125_20x_BF_01_no_folds_mask.png"
+    patch_save_path = Path("/media/jenny/Expansion/MM_HE_patches/HE_MM172_E_290125_20x_BF_01/aughovernet/2048x2048_mask_only_folds/")
     if not patch_save_path.exists():
         patch_save_path.mkdir(parents=True)
         print(f"Directory {patch_save_path} was created")
     
-    mask_path = "/media/.../masks/.../image.jpg"
+    # mask_path = "/media/.../masks/.../image.jpg"
 
-    extract_patches_wsi(wsi_path, patch_save_path)
-    # extract_patches(image_path, patch_save_path)
+    # extract_patches_wsi(wsi_path, patch_save_path)
+    extract_patches(image_path, patch_save_path)
