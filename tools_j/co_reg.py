@@ -11,7 +11,12 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 import shutil
 import warnings
 from pathlib import Path
-
+import sys
+# Get the path to the project root directory
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# Append the project root to sys.path
+if project_root not in sys.path:
+    sys.path.append(project_root)
 import cv2
 import matplotlib as mpl
 import numpy as np
@@ -35,7 +40,7 @@ device = "cuda"
 
 warnings.filterwarnings("ignore")
 global_save_dir = Path("./tmp/")
-output_dir = "/media/jenny/PRIVATE_USB/co_reg/HE_MM009_2_270125_20x_BF_01/CD8/"
+output_dir = "/media/jenny/Expansion/co_reg/HE_MM009_2_270125_20x_BF_01/aSMA_and_CD8/"
 
 def rmdir(dir_path: str | Path) -> None:
     """Helper function to delete directory."""
@@ -48,29 +53,13 @@ rmdir(global_save_dir)  # remove  directory if it exists from previous runs
 global_save_dir.mkdir()
 logger.info("Creating new directory %s", global_save_dir)
 
-# fixed_img_file_name = global_save_dir / "fixed_image.tif"
-# moving_img_file_name = global_save_dir / "moving_image.tif"
-
-# # Downloading fixed image from COMET dataset
-# r = requests.get(
-#     "https://tiatoolbox.dcs.warwick.ac.uk/testdata/registration/CRC/06-18270_5_A1MLH1_1.tif",
-#     timeout=120,  # 120s
-# )
-# with fixed_img_file_name.open("wb") as f:
-#     f.write(r.content)
-
-# # Downloading moving image from COMET dataset
-# r = requests.get(
-#     "https://tiatoolbox.dcs.warwick.ac.uk/testdata/registration/CRC/06-18270_5_A1MSH2_1.tif",
-#     timeout=120,  # 120s
-# )
-# with moving_img_file_name.open("wb") as f:
-#     f.write(r.content)
 
 # Image paths
-fixed_img_file_name = "/media/jenny/PRIVATE_USB/warwick_colab/Pyramidal_TIFF_files/HE_MM009_2_270125_20x_BF_01/Pyramidal_HE_MM009_2_270125_20x_BF_01.tif"
-moving_img_file_name = "/media/jenny/PRIVATE_USB/warwick_colab/Pyramidal_TIFF_files/HE_MM009_2_270125_20x_BF_01/Pyramidal_Image_MM009_2_CD8.tif"
+fixed_img_file_name = "/media/jenny/Expansion/co_reg/HE_MM009_2_270125_20x_BF_01/aSMA/Pyramidal_Image_MM009_B_SMA.tif"
+moving_img_file_name = "/media/jenny/Expansion/co_reg/HE_MM009_2_270125_20x_BF_01/CD8/Pyramidal_Image_MM009_B_CD8.tif"
 
+
+# Read images and reduce the resolution
 fixed_wsi_reader = WSIReader.open(input_img=fixed_img_file_name)
 # fixed_image_rgb = fixed_wsi_reader.slide_thumbnail(resolution=0.1563, units="power")
 fixed_image_rgb = fixed_wsi_reader.slide_thumbnail(resolution=0.4, units="power")
@@ -81,7 +70,7 @@ moving_image_rgb = moving_wsi_reader.slide_thumbnail(resolution=0.4, units="powe
 # moving_image_rgb = cv2.resize(moving_image_rgb, (fixed_image_rgb.shape[1], fixed_image_rgb.shape[0]), interpolation=cv2.INTER_CUBIC)
 fixed_image_rgb = cv2.resize(fixed_image_rgb, (moving_image_rgb.shape[1], moving_image_rgb.shape[0]), interpolation=cv2.INTER_CUBIC) # Makes sure fixed and moving image have same dimensions
 
-print(fixed_image_rgb)
+
 _, axs = plt.subplots(1, 2, figsize=(15, 8))
 axs[0].imshow(fixed_image_rgb, cmap="gray")
 axs[0].set_title("Fixed Image")
@@ -123,8 +112,10 @@ plt.show()
 
 temp = np.repeat(np.expand_dims(fixed_image, axis=2), 3, axis=2)
 _saved = cv2.imwrite(str(global_save_dir / "fixed.png"), temp)
+cv2.imwrite(output_dir + "fixed.png", fixed_image)
 temp = np.repeat(np.expand_dims(moving_image, axis=2), 3, axis=2)
 _saved = cv2.imwrite(str(global_save_dir / "moving.png"), temp)
+cv2.imwrite(output_dir + "moving.png",moving_image)
 
 
 save_dir = global_save_dir / "tissue_mask"
@@ -172,13 +163,6 @@ def post_processing_mask(mask: np.ndarray) -> np.ndarray:
 
 fixed_mask = np.load(output[0][1] + ".raw.0.npy")
 moving_mask = np.load(output[1][1] + ".raw.0.npy")
-# moving_mask = Image.open("/media/jenny/PRIVATE_USB/aSMA/SMA/SMA_Analysis/Image_MM266_2A_SMA_BW_0_4.tif")
-# moving_mask = moving_mask.convert("L")
-# moving_mask = np.array(moving_mask)
-# print(moving_mask.dtype)
-# print(moving_mask)
-# moving_mask = cv2.resize(moving_mask, (moving_image_rgb.shape[1], moving_image_rgb.shape[0]), interpolation=cv2.INTER_CUBIC)
-
 
 # num of unique objects for segmentation is 2.
 num_unique_labels = 2
@@ -227,6 +211,7 @@ np.save(output_dir + "affine_trans_matrix", dfbr_transform)
 #     fixed_image.shape[:2][::-1],
 # )
 
+# Test different images as input
 # Visualization
 original_moving = cv2.warpAffine(
     moving_image_rgb,
@@ -267,7 +252,7 @@ before_overlay = cv2.addWeighted(fixed_image_rgb, alpha, original_moving, alpha,
 
 dfbr_overlay = cv2.addWeighted(fixed_image_rgb, alpha, dfbr_registered_image, alpha, 0)
 
-# cv2.imwrite(output_dir + "DFBR_overlay.png", cv2.cvtColor(dfbr_overlay, cv2.COLOR_RGB2BGR), [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
+cv2.imwrite(output_dir + "DFBR_overlay.png", cv2.cvtColor(dfbr_overlay, cv2.COLOR_RGB2BGR), [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
 cv2.imwrite(output_dir + "fixed_image_rgb.png", cv2.cvtColor(fixed_image_rgb, cv2.COLOR_RGB2BGR), [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
 cv2.imwrite(output_dir + "dfbr_registered_image.png", cv2.cvtColor(dfbr_registered_image, cv2.COLOR_RGB2BGR), [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
 
