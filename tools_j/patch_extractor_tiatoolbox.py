@@ -8,6 +8,8 @@ import os
 from PIL import Image
 import sys
 
+import tifffile
+
 # Get the path to the project root directory
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -19,7 +21,7 @@ from tiatoolbox.wsicore import WSIReader
 from tiatoolbox.tools.patchextraction import SlidingWindowPatchExtractor
 
 
-def extract_patches_wsi(wsi_path : str | Path, patch_save_path : Path, mask_path: str | Path = None):
+def extract_patches_wsi(wsi_path, patch_save_path, mask_path = None):
 
     wsi = WSIReader.open(wsi_path)
     dim = wsi.slide_dimensions(resolution=1, units="power")
@@ -50,7 +52,8 @@ def extract_patches_wsi(wsi_path : str | Path, patch_save_path : Path, mask_path
         patch_filename = os.path.join(patch_save_path, f"patch_{patch_idx}.png")
         patch_image.save(patch_filename)
 
-def extract_patches(image_path : str | Path, patch_save_path : Path):
+def extract_patches(image_path, patch_save_path):
+    img = tifffile.imread(image_path)
 
     nr_extra_pixels = 0        # Number of extra pixels per patch
     pixels = 2048               # Pixels along x- and y- axis for each patch before extra pixels are added. x and y must have same number of pixels if processed with aug_hovernet.
@@ -60,7 +63,7 @@ def extract_patches(image_path : str | Path, patch_save_path : Path):
     y = pixels + nr_extra_pixels
 
     extractor = SlidingWindowPatchExtractor(
-        image_path,
+        img,
         patch_size=(x, y),
         stride=(x-nr_pixels_overlap, y-nr_pixels_overlap)
     )
@@ -77,16 +80,16 @@ def extract_patches(image_path : str | Path, patch_save_path : Path):
 if __name__ == "__main__":
 
     # wsi_path = "/media/.../Pyramidal_TIFF_files/.../Pyramidal_wsi.tif"
-    # image_path = "/media/.../patch_x.png"
-    # wsi_path = "/media/jenny/Expansion/MM_HE_pyramidal_tiff/Pyramidal_HE_MM179_B_70225_20x_BF_01.tif"
+    image_path = "/Volumes/Expansion/HE/20x/masks/Func116_ST_HE_20x_BF_01_black_mask.tif"
+    #wsi_path = "/Volumes/Expansion/HE/20x/images/Func116_ST_HE_20x_BF_01.tif"
     # patch_save_path = Path("/media/jenny/Expansion/MM_HE_patches/HE_MM179_B_70225_20x_BF_01/aughovernet/2048x2048/")
-    image_path = "/media/jenny/Expansion/MM_HE_masks/HE_MM179_2C_290125_20x_BF_01/HE_MM179_2C_290125_20x_BF_01_no_folds_mask.png"
-    patch_save_path = Path("/media/jenny/Expansion/MM_HE_patches/HE_MM172_E_290125_20x_BF_01/aughovernet/2048x2048_mask_only_folds/")
+    # image_path = "/media/jenny/Expansion/MM_HE_masks/HE_MM179_2C_290125_20x_BF_01/HE_MM179_2C_290125_20x_BF_01_no_folds_mask.png"
+    patch_save_path = Path("/Volumes/Expansion/HE_patches/20x/Func116_ST_HE_20x_BF_01/aughovernet/2048x2048_mask/")
     if not patch_save_path.exists():
         patch_save_path.mkdir(parents=True)
         print(f"Directory {patch_save_path} was created")
     
     # mask_path = "/media/.../masks/.../image.jpg"
 
-    # extract_patches_wsi(wsi_path, patch_save_path)
+    #extract_patches_wsi(wsi_path, patch_save_path)
     extract_patches(image_path, patch_save_path)
